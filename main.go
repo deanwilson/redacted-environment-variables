@@ -7,12 +7,13 @@ import (
 )
 
 func ToRedact() []string {
-
 	var redactedNames = []string{
 		"AWS_ACCESS_KEY_ID",
 		"AWS_SECRET_ACCESS_KEY",
 		"GITHUB_TOKEN",
-		"GITHUB_AUTH_TOKEN"}
+		"GITHUB_AUTH_TOKEN",
+		"_TOKEN_",
+	}
 
 	return redactedNames
 }
@@ -26,7 +27,7 @@ func main() {
 		name, value := pair[0], pair[1]
 
 		for _, redacted := range redactedVariables {
-			if name == redacted {
+			if strings.Contains(name, redacted) {
 				value = "XXXXXXXX"
 			}
 		}
