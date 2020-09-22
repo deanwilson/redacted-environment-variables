@@ -12,7 +12,7 @@ func DefaultConfig() *toml.Tree {
 
 	config, _ := toml.Load(`
   [config]
-  redacted = "123123123"
+  redacted = "********"
   `)
 
 	return config
@@ -79,7 +79,7 @@ func ToRedact() []string {
 
 func main() {
 	config := LoadConfig(".redacted-environment.toml")
-	redacted_string := config.Get("config.redacted").(string)
+	redacted_string := config.GetDefault("config.redacted", "********").(string)
 
 	redactedVariables := ToRedact()
 
