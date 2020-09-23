@@ -6,6 +6,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.0.1] - 2020-09-21
+## [0.0.1] - 2020-09-23
 ### Added
+- Allow the environment names to be redacted to be specified in a config file - PR#7
+- Allow the redacted string to be specified in a config file - PR#5
 - Initial code release PR#1 - print the environment variables but with sensitive values replaced with XXXXXXXX
