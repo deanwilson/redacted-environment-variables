@@ -65,23 +65,33 @@ func LoadConfig(filename string) *toml.Tree {
 	return config
 }
 
-func ToRedact() []string {
-	var redactedNames = []string{
-		"AWS_ACCESS_KEY_ID",
-		"AWS_SECRET_ACCESS_KEY",
-		"GITHUB_TOKEN",
-		"GITHUB_AUTH_TOKEN",
-		"_TOKEN_",
+func RedactedNames(fields string) []string {
+	var names []string
+
+	if fields == "NONE" {
+		names = []string{
+			"AWS_ACCESS_KEY_ID",
+			"AWS_SECRET_ACCESS_KEY",
+			"GITHUB_TOKEN",
+			"GITHUB_AUTH_TOKEN",
+			"_TOKEN",
+		}
+	} else {
+		trimmed := strings.Trim(fields, "[]")
+		names = strings.Fields(trimmed)
 	}
 
-	return redactedNames
+	return names
 }
 
 func main() {
 	config := LoadConfig(".redacted-environment.toml")
 	redacted_string := config.GetDefault("config.redacted", "********").(string)
 
-	redactedVariables := ToRedact()
+	redacted_names := config.GetDefault("redact.names", "NONE")
+	string_names := fmt.Sprintf("%s", redacted_names)
+
+	redactedVariables := RedactedNames(string_names)
 
 	for _, envvar := range os.Environ() {
 		pair := strings.SplitN(envvar, "=", 2)
